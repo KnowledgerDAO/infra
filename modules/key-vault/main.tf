@@ -26,6 +26,7 @@ resource "azurerm_key_vault" "example" {
 
     key_permissions = [
       "Get",
+      "Update"
     ]
 
     secret_permissions = [
