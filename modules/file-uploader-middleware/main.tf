@@ -1,4 +1,13 @@
+data "azurerm_key_vault" "example" {
+  name                = "teste-bridgez"
+  resource_group_name = var.resource_group_name
+}
 
+
+data "azurerm_key_vault_secret" "powergate_token" {
+  name         = "powergate-token"
+  key_vault_id = data.azurerm_key_vault.example.id
+}
 
 resource "azurerm_container_group" "example" {
   name                = "example-continst"
@@ -9,8 +18,8 @@ resource "azurerm_container_group" "example" {
   os_type             = "Linux"
 
   container {
-    name   = "hello-world"
-    image  = "mcr.microsoft.com/azuredocs/aci-helloworld:latest"
+    name   = "powergate"
+    image  = "jofreis/powergate:latest"
     cpu    = "0.5"
     memory = "1.5"
 
@@ -20,16 +29,9 @@ resource "azurerm_container_group" "example" {
     }
 
     environment_variables = {
-      POWERGATE_IP="20.127.164.75"
-      POWERGATE_TOKEN="88945395-d198-4aa5-a148-5066a591daf8"
+      POWERGATE_IP    = var.powergate_ip
+      POWERGATE_TOKEN = data.azurerm_key_vault_secret.powergate_token.value
     }
-  }
-
-  container {
-    name   = "sidecar"
-    image  = "mcr.microsoft.com/azuredocs/aci-tutorial-sidecar"
-    cpu    = "0.5"
-    memory = "1.5"
   }
 
   tags = {
