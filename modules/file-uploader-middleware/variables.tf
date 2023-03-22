@@ -6,3 +6,8 @@ variable "location" {
   type = string
 }
 
+
+variable "powergate_ip"{
+  type = string
+}
+
