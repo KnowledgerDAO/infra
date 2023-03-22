@@ -1,2 +1,4 @@
 .terraform*
 terraform.tfstate
+scripts/set-token/node_modules
+scripts/set-token/package-lock.json
